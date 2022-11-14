@@ -1,0 +1,28 @@
+.App {
+  background-color: #282c34;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+  position: relative;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+  25% {
+    transform: scale(1.75);
+  }
+  50% {
+    transform: scale(0.75);
+  }
+  75% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.circle {
+  animation: pop 1.25s ease-in-out;
+}
