@@ -3,9 +3,6 @@ import { useState, useCallback, useRef } from "react";
 import { toPng } from "html-to-image"; //https://github.com/bubkoo/html-to-image
 //here's how the package works https://github.com/bubkoo/html-to-image#how-it-works
 
-//Click anywhere on the page, put circle on that position
-//Buttons to undo/redo
-
 //create Circle component
 function Circle(props) {
   //init vars

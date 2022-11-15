@@ -1,7 +1,6 @@
 import "./App.css";
 import { useState, useRef } from "react";
 import useFitText from "use-fit-text";
-
 import seedrandom from "seedrandom";
 
 function App() {
