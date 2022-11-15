@@ -1,5 +1,7 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
+import { toPng } from "html-to-image"; //https://github.com/bubkoo/html-to-image
+//here's how the package works https://github.com/bubkoo/html-to-image#how-it-works
 
 //Click anywhere on the page, put circle on that position
 //Buttons to undo/redo
@@ -38,6 +40,9 @@ function App() {
   //init array of coords
   const [coords, setCoords] = useState([]);
   const [savedCoords, setSavedCoords] = useState([]);
+
+  //set ref for screenshot div
+  const ref = useRef(null);
 
   //onclick fun
   function onClickFun(e) {
@@ -79,30 +84,71 @@ function App() {
     }
   }
 
+  //declare screenshot function
+  const takeScreenshot = useCallback(() => {
+    //if there isn't a valid element selected, exit
+    if (ref.current === null) {
+      return;
+    }
+
+    //filter out certain divs (button group)
+    const filter = (node) => {
+      const exclusionClasses = ["button-group"];
+      return !exclusionClasses.some((classname) =>
+        [...node.classList].includes(classname)
+      );
+    };
+
+    //convert to png
+    toPng(ref.current, { cacheBust: true, filter: filter })
+      .then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = "dot-pop.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [ref]);
+
   return (
     // outer wrapper
     <div
       className="App"
+      ref={ref}
       onClick={(e) => {
         onClickFun(e);
       }}
     >
-      {/* undo button */}
-      {coords.length > 0 && (
-        <button style={{ margin: 5, position: "absolute" }} onClick={undoFun}>
-          Undo
-        </button>
-      )}
+      <div className="button-group">
+        {/* undo button */}
+        {coords.length > 0 && (
+          <button style={{ margin: 5, position: "absolute" }} onClick={undoFun}>
+            Undo
+          </button>
+        )}
 
-      {/* redo button */}
-      {savedCoords.length > 0 && (
-        <button
-          style={{ margin: 5, position: "absolute", left: 50 }}
-          onClick={redoFun}
-        >
-          Redo
-        </button>
-      )}
+        {/* screenshot button */}
+        {coords.length > 0 && (
+          <button
+            style={{ margin: 5, position: "absolute", left: 50 }}
+            onClick={takeScreenshot}
+          >
+            Screenshot
+          </button>
+        )}
+
+        {/* redo button */}
+        {savedCoords.length > 0 && (
+          <button
+            style={{ margin: 5, position: "absolute", left: 135 }}
+            onClick={redoFun}
+          >
+            Redo
+          </button>
+        )}
+      </div>
       {coords.map((p) => {
         return <Circle key={p.x + p.y} {...p}></Circle>;
       })}
