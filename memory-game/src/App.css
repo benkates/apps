@@ -1,3 +1,7 @@
+body {
+  height: 100%;
+}
+
 .App {
   background-color: #282c34;
   height: 100vh;
@@ -15,11 +19,34 @@
   color: white;
 }
 
+.timer-container {
+  position: absolute;
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+.timer {
+  display: flex;
+  width: 50%;
+  -ms-transform: translateY(50%);
+  transform: translateY(50%);
+  height: calc(var(--vh, 1vh) * 50);
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
+
 .card {
-  width: 10vw;
+  width: 15vw;
   height: 15vh;
   border: 1px solid white; /*width style color*/
   border-radius: 0.25em;
+  cursor: pointer;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  z-index: 1;
 }
 
 .matched {
