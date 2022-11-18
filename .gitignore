@@ -3,6 +3,8 @@
 
 */build/
 
+/yt-history/R/data/
+
 # Logs
 logs
 *.log
